@@ -14,6 +14,7 @@ CTRL+...:
 E = Eraser
 B = Brush
 F = Fill Tool
+C = Clear Canvas
 R = Reset Canvas position
 
 Mouse control:

@@ -1,0 +1,23 @@
+CTRL+...:
+	1 = Black Colour
+	2 = White Colour
+	3 = Red Colour
+	4 = Green Colour
+	5 = Blue Colour
+	
+	Z = Undo
+	Y = Redo
+	S = Save ("Will be saved as 'Untitled.png' in the script directory")
+	
+(Note that the numbers are not the numpad ones)
+
+E = Eraser
+B = Brush
+F = Fill Tool
+R = Reset Canvas position
+
+Mouse control:
+
+ - Scroll Up to zoom in
+ - Scroll Down to zoom out
+ - Hold the middle mouse button while moving the mouse to move the canvas

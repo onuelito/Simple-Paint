@@ -1,10 +1,7 @@
 """
 Version 0.0b will include the following features:
 -Brush Tool (Done)
--Brush thickness
 -Eraser tool (Done)
--Eraser thickness
--Hitman's eraser (erase specific color)
 -Fill Tool(Done)
 -5 colors: (Done)
  - Red
@@ -14,18 +11,23 @@ Version 0.0b will include the following features:
  - Black
 -Redo and Undo (Done)
 
--Zoom in and out (Done)
--Moving canvas (Done)
--CTRL+S will save your file in the cwd.
+**(Future Features for version 0.0)**
+-An actual GUI
+ - Toolbar
+ - Statusbar (for tooltip and etc, like Pencil2D's)
+ - Buttons
+ - More stuff
 
-This version will include a "CONTROLS" file which will
-indicate how the program works.
-
-**(Future Features)**
--Toolbar
--Bottom bar (indicates zoom and tooltip like Pencil2d)
-
+-Image layers
 -Import Images
+-Color selector
+-Tools THICCness
+-Change resolution
+-Selection tool (probably)
+-Different image export type
+-Hitman's eraser (erase specific color)
+
+**more features might be added in the future**
 """
 
 import numpy as np
@@ -34,7 +36,7 @@ from pyglet.gl import*
 from pyglet.window import key
 
 #Window constants
-WIDTH, HEIGHT = 1200, 720
+WIDTH, HEIGHT = 1280, 720
 BGCOLOR = (.7,.7,.7,1)
 
 window = pyglet.window.Window(
@@ -174,7 +176,7 @@ def updateURData():
         ur_data.append(None)
         ur_data.pop(0)
         ur_index -= 1 
-    print(ur_index)
+    
     if ur_index == None: ur_index = 0
     else: ur_index += 1
 
@@ -188,7 +190,7 @@ def updateURData():
 def undo():
     global c_data, ur_data, ur_index
 
-    print(ur_index, "Undo")
+    
     if ur_index == None or ur_index == 0:
         print("Cannot undo: minimum reached"); return
 
@@ -210,6 +212,7 @@ def save():
     saveImg = pyglet.image.ImageData(CWIDTH, CHEIGHT, 'RGBA', saveImg)
     
     saveImg.save("Untitled.png")
+    print(CSI+"33m"+"Image saved in current directory as \"Untitled.png\" "+CSI+"0m")
 
 last_mouse = None
 @window.event
@@ -286,8 +289,11 @@ def on_draw():
     output = output.get_texture()
 
     glClearColor(*BGCOLOR)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST) #Disable Smoothing
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST) #Disable Smoothing
+    
+    #Smoothing only if far
+    if zoom > 1:
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST) #Disable Smoothing
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST) #Disable Smoothing
 
     window.clear()
 
@@ -297,16 +303,20 @@ def on_draw():
     output.anchor_y = output.height//2
     output.blit(canvas_x, canvas_y)
 
+CSI = "\x1B["
 #Compiling numba functions in advance
 def numba_funcs():
     global canvas_x, canvas_y, ur_index
+    print(CSI+"32m" + "Loading functions..." + CSI + "0m")
     fill(c_data, 0, 0, WHITE)
     draw(0,0,c_data,(0,0,), zoom, paintColor)
     clear()
     
     ur_data[0] = np.copy(c_data); ur_index = 0 #Initial undo redo state
     canvas_x, canvas_y = WIDTH//2, HEIGHT//2 #Initial position at center
+    print(CSI+"32m" + "Done!" + CSI + "0m")
 
 #Startup setup
 numba_funcs()
 pyglet.app.run()
+print("Bye")

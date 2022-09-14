@@ -7,3 +7,6 @@ Dependencies for this program are :
 
 ## To install dendencies:<br>
 `pip install -r requirements.txt`
+
+##
+<b>P.S: Please read the "controls.txt" file for information on how to use the program

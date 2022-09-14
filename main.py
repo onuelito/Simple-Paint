@@ -36,7 +36,7 @@ from pyglet.gl import*
 from pyglet.window import key
 
 #Window constants
-WIDTH, HEIGHT = 1280, 720
+WIDTH, HEIGHT = 800, 600
 BGCOLOR = (.7,.7,.7,1)
 
 window = pyglet.window.Window(
@@ -52,7 +52,7 @@ GREEN = np.array([0,255,0,255])
 BLUE  = np.array([0,0,255,255])
 
 #Canvas varibales
-CWIDTH, CHEIGHT = 800, 600
+CWIDTH, CHEIGHT = 640, 480
 canvas_x, canvas_y = 0, 0
 c_data = np.zeros((CHEIGHT, CWIDTH, 4), dtype='uint8')
 

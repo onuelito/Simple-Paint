@@ -102,7 +102,7 @@ void draw(uint32_t* data, int radius, int x, int y, int mx, int my, uint32_t col
 
 //Fills//
 void floodFill(uint32_t *data, uint32_t n_color, uint32_t c_color, int x, int y){
-    queue_t dqueue; // View more in "queue.h"
+	queue_t dqueue; // View more in "queue.h"
    	bool visited[length]; //Visited points
 	
 	//Array & queue initialization

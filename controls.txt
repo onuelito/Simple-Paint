@@ -1,13 +1,13 @@
 CTRL+...:
-	1 = Black Colour
-	2 = White Colour
-	3 = Red Colour
-	4 = Green Colour
-	5 = Blue Colour
+	1   = Black Colour
+	2   = White Colour
+	3   = Red Colour
+	4   = Green Colour
+	5   = Blue Colour
 	
-	Z = Undo
-	Y = Redo
-	S = Save ("Will be saved as 'Untitled.png' in the script directory")
+	Z   = Undo
+	Z+Y = Redo
+	S   = Save ("Will be saved as 'Untitled.png' in the script directory")
 	
 (Note that the numbers are not the numpad ones)
 

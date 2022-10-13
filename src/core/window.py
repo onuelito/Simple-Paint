@@ -9,12 +9,11 @@ import pyglet
 from pyglet.gl import*
 from pyglet.window import key
 
-import src.config.objects as objects
 import src.core.canvas as canvas
+import src.tools.ids as toolID
 import src.core.dhist as dhist
 import src.core.mouse as mouse
 import src.cfuncs as clib
-import src.gui as gui
 import numpy as np
 
 #Colors
@@ -24,14 +23,12 @@ RED     = 0xFF0000FF
 GREEN   = 0xFF00FF00
 BLUE    = 0xFFFF0000
 
-MODES = ["Draw", "Fill", "Eraser"]
 KEYBOARD = key.KeyStateHandler()
 BGCOLOR = [.7, .7, .7 , 1]
 
 #Window
-window = pyglet.window.Window(800, 600, caption="Hello Pyglet")
+window = pyglet.window.Window(800, 600, caption="Simple - Paint")
 brush_size = 0
-mode = MODES[0]
 color = BLACK
 
 
@@ -51,16 +48,18 @@ def save():
     print("[Image saved as \"Untitled.png\" in current directory]")
 
 def draw(x, y, mx, my):
+    if mouse.target_gui: return
     dcolor = color
-    if mode == MODES[2]: dcolor = WHITE
-    clib.draw(dcolor, brush_size, x, y, mx, my)
+    target = toolID.MODULES[mouse.tool]
+    if mouse.tool == toolID.ERASER: dcolor = WHITE
+    clib.draw(dcolor, target.size, x, y, mx, my)
 
-def flood_fill(x, y): clib.flood_fill(color, x, y); dhist.update()
+def flood_fill(x, y): 
+	if mouse.target_gui: return
+	clib.flood_fill(color, x, y); dhist.update()
 
-def tool_mode(index):
-    global mode
-    print("Set mode: "+MODES[index])
-    mode = MODES[index]
+def tool_mode(ID):
+    mouse.set_toolmode(ID)
 
 def set_color(ncolor):
     global color
@@ -83,24 +82,24 @@ def zoom(x, y, scroll_y):
     canvas.x, canvas.y    = x-delta_x, y-delta_y
 
 def set_brush_size(size): 
-    global brush_size
-    brush_size = min(max(0, size), 50)
-    print("Brush size is not: %d"%(brush_size))
+    target = toolID.MODULES[mouse.tool]
+    target.size = min(max(target.MIN_SIZE, size), target.MAX_SIZE)
+    print("Brush size is not: %d"%(target.size))
 
 #MOUSE EVENTS#
 @window.event
 def on_mouse_press(x, y, bttn, mod):
-    if bttn == 1 and mode == MODES[1]:
+    if bttn == 1 and mouse.tool == toolID.BUCKET:
         flood_fill(x, y)
     mouse.x, mouse.y = x, y
 
 @window.event
 def on_mouse_release(x, y, bttn, mod):
-    if (mode == MODES[0] or mode == MODES[2]) and bttn == 1: dhist.update()
+    if (mouse.tool == toolID.PENCIL or mouse.tool == toolID.ERASER) and bttn == 1: dhist.update()
 
 @window.event
 def on_mouse_drag(x, y, dx, dy, bttn, mod):
-    if (mode == MODES[0] or mode == MODES[2]) and bttn == 1:
+    if (mouse.tool == toolID.PENCIL or mouse.tool == toolID.ERASER) and bttn == 1:
         draw(x, y, mouse.x, mouse.y)
 
     mouse.x, mouse.y = x, y
@@ -108,11 +107,15 @@ def on_mouse_drag(x, y, dx, dy, bttn, mod):
 
 @window.event
 def on_mouse_scroll(x, y, scroll_x, scroll_y):
-    if KEYBOARD[key.LSHIFT]: 
-        if scroll_y > 0: set_brush_size(brush_size+1)
-        else: set_brush_size(brush_size - 1)
+    if KEYBOARD[key.LSHIFT] and mouse.tool in toolID.RESIZABLES:
+        if scroll_y > 0: set_brush_size(toolID.MODULES[mouse.tool].size+1)
+        else: set_brush_size(toolID.MODULES[mouse.tool].size - 1)
     
     else: zoom(x, y, scroll_y)
+    
+@window.event
+def on_mouse_motion(x, y, dx, dy):
+	mouse.x, mouse.y = x, y
 
 #KEYBOARD EVENTS#
 @window.event
@@ -138,10 +141,10 @@ def on_key_press(symbol, mod):
         canvas.x = window.width//2
         canvas.y = window.height//2
 
-    if symbol == key.B: tool_mode(0)
-    if symbol == key.F: tool_mode(1)
+    if symbol == key.B: tool_mode(toolID.PENCIL)
+    if symbol == key.F: tool_mode(toolID.BUCKET)
     if symbol == key.C: canvas.data.fill(WHITE); dhist.update()
-    if symbol == key.E: tool_mode(2)
+    if symbol == key.E: tool_mode(toolID.ERASER)
 
 @window.event
 def on_draw():
@@ -166,4 +169,4 @@ def on_draw():
 def update(dt): pass
 
 window.push_handlers(KEYBOARD)
-pyglet.clock.schedule_interval(update, 1/60)
+#pyglet.clock.schedule_interval(update, 1/60)

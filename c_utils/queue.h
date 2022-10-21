@@ -38,10 +38,12 @@ bool QUEUE_ENQUEUE(queue_t *q, int x, int y){
 
 int QUEUE_DEQUEUE(queue_t *q, int *x, int *y){
     if(q->head == NULL) return QUEUE_EMPTY;
-    *x = q->head->x;
-    *y = q->head->y;
+    node_t *tmp = q->head;
+    *x = tmp->x;
+    *y = tmp->y;
     
     q->head = q->head->next;
     if(q->head == NULL) q->tail = NULL;
+    free(tmp);
     return ((*x)+(*y*QUEUE_WIDTH));
 }

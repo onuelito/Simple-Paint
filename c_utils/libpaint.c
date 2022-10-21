@@ -104,25 +104,30 @@ void draw(uint32_t* data, int radius, int x, int y, int mx, int my, uint32_t col
 
 //Fills//
 void floodFill(uint32_t *data, uint32_t n_color, uint32_t c_color, int x, int y){
-	queue_t dqueue; // View more in "queue.h"
-   	bool visited[length]; //Visited points
+	queue_t *dqueue; // View more in "queue.h"
+   	bool *visited; //Visited points
+
+   	dqueue = malloc(sizeof*dqueue);
+    visited = calloc(length, sizeof*visited);
 	
 	//Array & queue initialization
-	for(int i = 0; i < length; i++) visited[i] = false;
-	QUEUE_INITIALIZE(&dqueue, width);
-	QUEUE_ENQUEUE(&dqueue, x, y);
+	QUEUE_INITIALIZE(dqueue, width);
+	QUEUE_ENQUEUE(dqueue, x, y);
 	
 	int point;
-	while((point = QUEUE_DEQUEUE(&dqueue, &x, &y)) != QUEUE_EMPTY){
+	while((point = QUEUE_DEQUEUE(dqueue, &x, &y)) != QUEUE_EMPTY){
 		
 		if(in_borders(x, y) && !visited[point] && data[point] == c_color){
 			visited[point] = true;
 			data[point] = n_color;
 			
-			QUEUE_ENQUEUE(&dqueue, x-1, y);
-			QUEUE_ENQUEUE(&dqueue, x+1, y);
-			QUEUE_ENQUEUE(&dqueue, x, y+1);
-			QUEUE_ENQUEUE(&dqueue, x, y-1);
+			QUEUE_ENQUEUE(dqueue, x-1, y);
+			QUEUE_ENQUEUE(dqueue, x+1, y);
+			QUEUE_ENQUEUE(dqueue, x, y+1);
+			QUEUE_ENQUEUE(dqueue, x, y-1);
 		}
 	}
+
+	free(visited);
+    free(dqueue);
 }

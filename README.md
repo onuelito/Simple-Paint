@@ -8,7 +8,7 @@ Simple Paint is an open-source project written in Python and C which's goal is b
 ```
 sudo pacaman -S gcc
 ```
-**Windows:** You will need to have installed on your computer a C compiler. For instance Visual Studio by installing Visual Studio with the C/C++ tools in your machine.
+**Windows:** You will need to have installed on your computer a C compiler. For instance by installing Visual Studio with the C/C++ tools in your machine.
 
 **Mac OS:** :(
 ##

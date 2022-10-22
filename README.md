@@ -1,24 +1,47 @@
-# Simple-Paint
+# Simple-Paint #
 Simple Paint is an open-source project written in Python and C which's goal is being easy to modify, minimalist and not being heavily dependencies reliant.<br/>
-<h4>Python packages required to run this program are:</h4>
 
-- Numpy
-- Pyglet
+## System requirements ##
+**Linux:** You will need to have installed `gcc` on your Linux distribution. It can be done using your package manager. For instance:
+<h4>On Arch based distributions</h4>
 
+```
+sudo pacaman -S gcc
+```
+**Windows:** You will need to have installed on your computer a C compiler. For instance Visual Studio by installing Visual Studio with the C/C++ tools in your machine.
 
-They can be installed using the following command in the project directory: 
-`pip install -r requirements.txt`
+**Mac OS:** :(
 ##
-You will also need to have `gcc` and `make` installed on your Linux system and use the command : `make` in the project directory. Both can be installed using your system package manager. 
+### Running the application ###
+Open the terminal directory in the project directory and type the following:
 
-<h5>On Arch Linux based distributions:</h5>
+**Linux:**
+```py
+#Virtual environment (optional)
+python -m venv pvenv
+. venv/bin/activate
 
-```
-sudo pacman -S make gcc
-```
-<h5>On Debian based ditributions:</h5>
+#Setting everything up
+python -m pip install -r requirements.txt
+python setup.py build_ext -i
 
+#Running
+python run.py
 ```
-sudo apt-get install make gcc
+
+**Windows**
+```py
+#Virtual environment (optional)
+python -m venv pvenv
+"pvenv/Scripts/Activate"
+
+#Setting everything up
+python -m pip install -r requirements.txt
+python setup.py build_ext -i
+
+#Running
+python run.py
 ```
-Currently this program only works on Linux systems but work will be done in order to add Windows support.
+
+**Mac OS**<br/>
+:(

@@ -1,6 +1,5 @@
 /*Had to learn C for performance*/
 
-#include <stdio.h>
 #include <math.h>
 #include <stdint.h>
 #include <stdbool.h>

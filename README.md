@@ -19,7 +19,7 @@ Open the terminal directory in the project directory and type the following:
 ```py
 #Virtual environment (optional)
 python -m venv pvenv
-. venv/bin/activate
+. pvenv/bin/activate
 
 #Setting everything up
 python -m pip install -r requirements.txt

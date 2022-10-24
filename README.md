@@ -13,7 +13,7 @@ sudo pacaman -S gcc
 **Mac OS:** :(
 ##
 ### Running the application ###
-Open the terminal directory in the project directory and type the following:
+Open the terminal in the project directory and type the following:
 
 **Linux:**
 ```py

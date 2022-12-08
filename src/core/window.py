@@ -40,12 +40,13 @@ canvas.set_size(640, 480); canvas.data.fill(WHITE)
 dhist.data[dhist.index] = np.copy(canvas.data)
 dhist.index = 0
 
-def save():
+def save(path=None, name="Untitled.png"):
     save_img = canvas.data.tobytes()
     save_img = pyglet.image.ImageData(canvas.width, canvas.height, 'RGBA', save_img)
 
-    save_img.save("Untitled.png")
-    print("[Image saved as \"Untitled.png\" in current directory]")
+    if path == None: save_img.save(name)
+    else: save_img.save(path+"/"+f"{name}")
+    print("[Image saved as \"%s\"]"%name)
 
 def draw(x, y, mx, my):
     if mouse.target_gui: return
@@ -84,21 +85,26 @@ def zoom(x, y, scroll_y):
 def set_brush_size(size): 
     target = toolID.MODULES[mouse.tool]
     target.size = min(max(target.MIN_SIZE, size), target.MAX_SIZE)
-    print("Brush size is not: %d"%(target.size))
+    print("Brush size is now: %d"%(target.size))
 
 #MOUSE EVENTS#
 @window.event
 def on_mouse_press(x, y, bttn, mod):
+    if mouse.target_win: return
+
     if bttn == 1 and mouse.tool == toolID.BUCKET:
         flood_fill(x, y)
     mouse.x, mouse.y = x, y
 
 @window.event
 def on_mouse_release(x, y, bttn, mod):
+    if mouse.target_win: return
     if (mouse.tool == toolID.PENCIL or mouse.tool == toolID.ERASER) and bttn == 1: dhist.update()
 
 @window.event
 def on_mouse_drag(x, y, dx, dy, bttn, mod):
+    if mouse.target_win: return #If pop up window innit?
+
     if (mouse.tool == toolID.PENCIL or mouse.tool == toolID.ERASER) and bttn == 1:
         draw(x, y, mouse.x, mouse.y)
 
@@ -107,6 +113,7 @@ def on_mouse_drag(x, y, dx, dy, bttn, mod):
 
 @window.event
 def on_mouse_scroll(x, y, scroll_x, scroll_y):
+    if mouse.target_win: return
     if KEYBOARD[key.LSHIFT] and mouse.tool in toolID.RESIZABLES:
         if scroll_y > 0: set_brush_size(toolID.MODULES[mouse.tool].size+1)
         else: set_brush_size(toolID.MODULES[mouse.tool].size - 1)
@@ -123,8 +130,10 @@ def on_key_press(symbol, mod):
     """
     Function for key shortcuts
     """
+
+    if mouse.target_win: return
     if mod & key.MOD_CTRL:
-        if symbol == key.S: save()
+        #if symbol == key.S: save()
         if symbol == key.Z: 
             if KEYBOARD[key.LSHIFT]: dhist.redo()
             else: dhist.undo()
@@ -163,10 +172,8 @@ def on_draw():
     output.height = int(canvas.height*canvas.zoom)
     output.anchor_x = output.width//2
     output.anchor_y = output.height//2
+
+    #Zooming time
     output.blit(canvas.x, canvas.y)
 
-
-def update(dt): pass
-
 window.push_handlers(KEYBOARD)
-#pyglet.clock.schedule_interval(update, 1/60)

@@ -6,6 +6,7 @@ x, y, px, py = [0]*4
 
 #Custom variables
 target_gui = None
+target_win = None
 tool = None #The mouse is holding the tool no?
 
 #Updating buttons in GUI

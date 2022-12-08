@@ -10,7 +10,6 @@ sudo pacaman -S gcc
 ```
 **Windows:** You will need to have installed on your computer a C compiler. For instance by installing Visual Studio with the C/C++ tools in your machine.
 
-**Mac OS:** :(
 ##
 ### Running the application ###
 Open the terminal in the project directory and type the following:
@@ -43,5 +42,3 @@ python setup.py build_ext -i
 python run.py
 ```
 
-**Mac OS**<br/>
-:(

@@ -1,5 +1,6 @@
 import pyglet
 from pyglet.gl import*
+import pyglet.window.key as key
 
 from src.core.window import save as winsave
 import src.windows.manager as man
@@ -93,6 +94,10 @@ class TextEntry(pyglet.gui.TextEntry):
             self.dispatch_event('on_commit', self._layout.document.text)
             self._set_focus(False)
             return
+
+    def on_key_press(self, button, mod):
+        if mod & key.MOD_CTRL and key.A == button:
+            self._caret.select_paragraph(self.x, self.y)
 
 class TextButton(pyglet.gui.PushButton):
     def __init__(self, text, x, y, pressed, depressed, hover=None, batch=None, group=None):
@@ -363,9 +368,10 @@ def load_drop_down_menu(config):
     )
 
     dropdown.add(".png", config.TFrame)
-    dropdown.add(".jpg", config.TFrame)
+    #Will be fixed up later on as no encoder
+    #dropdown.add(".jpg", config.TFrame)
     #dropdown.add(".jpeg", config.TFrame)
-    dropdown.add(".bmp", config.TFrame)
+    #dropdown.add(".bmp", config.TFrame)
 
     config.DropDownMn = dropdown
     config.TFrame.add_widget(dropdown)
@@ -374,7 +380,9 @@ def load_drop_down_menu(config):
 def load_directory(button, dirt):
     @button.event
     def on_press():
-        man.chdir(dirt)
+        import os
+        path = os.path.join(man.cwd, dirt)
+        man.chdir(path)
         print(button.label.text)
     button.label.text = "[Directory] "+ str(dirt)
     return button
@@ -553,6 +561,7 @@ def load_bottom(config):
 
 
 def create_save_gui(config):
+
     Prssd = Solid_Color(90, 25, color=(100, 100, 100, 255))
     Dprsd = Solid_Color(90, 25, color=(150, 150, 150, 255))
     Hover = Solid_Color(90, 25, color=(125, 125, 125, 255))
@@ -561,7 +570,7 @@ def create_save_gui(config):
     PArea = config.area(config.PPercent)
 
     Entry = TextEntry(
-        "Enter File Name", 
+        man.EntryDefaultText, 
         int(TArea.width*0.05), 
         int(TArea.y+TArea.height*0.55), 
         int(TArea.width*0.75),
@@ -597,8 +606,9 @@ def create_save_gui(config):
     @Sbttn.event
     def on_press():
         if config.Extension == None: return
-        name=Entry._doc.text+config.Extension
-        winsave(path=man.cwd, name=name)
+        name=Entry._doc.text
+        winsave(path=man.cwd, name=name+config.Extension)
+        man.EntryDefaultText = name
         config.on_close()
     
     @Cbttn.event

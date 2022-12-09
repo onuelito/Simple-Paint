@@ -6,6 +6,7 @@ files   = list() #Files (others)
 cwd     = None #Current Working Directory
 context = None
 content_limit = 10 #How much buttons can be drawn
+EntryDefaultText = "Enter File Name"
 
 def chdir(path):
     global cwd
@@ -45,7 +46,8 @@ def get_content(path):
         if index == content_limit: break
         if content.startswith("."):
             continue
-        if os.path.isdir(content):
+        path = os.path.join(cwd, content)
+        if os.path.isdir(path):
             cdirts.append(content)
             index += 1
             continue

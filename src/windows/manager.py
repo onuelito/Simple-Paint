@@ -5,7 +5,7 @@ dirts   = list() #Directories
 files   = list() #Files (others)
 cwd     = None #Current Working Directory
 context = None
-content_limit = 10 #How much buttons can be drawn
+content_limit = 100 #How much buttons can be drawn
 EntryDefaultText = "Enter File Name"
 
 def chdir(path):

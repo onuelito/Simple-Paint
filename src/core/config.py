@@ -25,7 +25,7 @@ def Config():
         V : Color Picker<br/><br/>
 
         CTRL + Z : Undo<br/>
-        CTRL + Y : Redo<br/>
+        CTRL + SHIFT + Z : Redo<br/>
         CTRL + S : Save<br/>
 
         CTRL + MouseScroll  : Zoom In/Out<br/>

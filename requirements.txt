@@ -1,0 +1,4 @@
+pyglet==1.5.27
+setuptools
+cython
+numpy

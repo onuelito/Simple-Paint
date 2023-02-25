@@ -29,7 +29,7 @@ python run.py
 ```
 
 **Linux(Alt):**
-You can also use the make file using the `make` while in a Virtual Environment
+You can also use the make file using the `make` command while in a Virtual Environment
 
 **Windows**
 ```py

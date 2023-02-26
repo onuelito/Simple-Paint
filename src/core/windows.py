@@ -188,6 +188,7 @@ class SaveWindow(WindowBase):
             SolidColor((105,105,105,255), 500, 30),
             caret_color=(255,255,255),
         )
+        self.fileEntry.illegal_characters = "<>:\"\\/|?*" #Silly Windows Users
 
 
         self.saveButton = tglet.TextButton(
@@ -201,7 +202,24 @@ class SaveWindow(WindowBase):
         )
 
         @self.saveButton.event
-        def on_click(): 
+        def on_click():
+        
+            #Silly Windows Users
+            check = 0
+            for c in self.fileEntry._document.text:
+                if check == 0:
+                    if c == " ": continue
+                    if c.lower() == "c": check += 1
+                    else: break
+                if check == 1:
+                    if c.lower() == "o": check += 2
+                    else: break
+                if check == 2:
+                    if c.lower() == "n": check += 3; break
+                    else: break
+                
+            if check == 3: print("You think you're slick? You can't do that"); return
+        
             feedback = self.root.canvas.save_as(self.fileEntry._document.text)
             if feedback: self.on_close()
         self.saveButton.style(sticky_x=True)

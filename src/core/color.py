@@ -149,7 +149,7 @@ class ColorPicker:
         self.select_color = color
         self.selector._vertex_list.colors[8:12] = color
         self.delta_triangle = (0,0)
-        #self.triangle_color()
+        self.triangle_color()
 
     def lerp(self, a, b, c):
         """

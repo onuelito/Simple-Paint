@@ -298,7 +298,7 @@ class Window(pyglet.window.Window):
         self.oFrame.on_mouse_press(x, y, button, modifiers)
 
         self.colorP.on_mouse_press(x, y, button, modifiers)
-        self.tool_manager.on_mouse_press(x, y, button, modifiers)
+        if button != 2: self.tool_manager.on_mouse_press(x, y, button, modifiers)
 
     def on_mouse_release(self, x, y, button, modifiers):
         self.oFrame.on_mouse_release(x, y, button, modifiers)
@@ -363,6 +363,7 @@ class Window(pyglet.window.Window):
             if value != None: value.on_close()
         self.close()
 
-window = Window(800, 600, caption="Simple-Paint: New File", resizable=True)
-
+window  = Window(800, 600, caption="Simple-Paint", resizable=True)
+icon    = pyglet.resource.image("pencil.ico")
+window.set_icon(icon)
 pyglet.app.run()

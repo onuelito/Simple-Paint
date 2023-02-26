@@ -88,7 +88,6 @@ class Canvas:
         save_img.save(os.getcwd()+"/"+f"{name}")
         print("[Image saved as \"%s\"]"%name)
         self.window.app_config["MANAGER"]["SAVE_NAME"] = name
-        self.window.set_caption("Simple-Paint: "+name)
         return True
 
     def open(self, name="Untitled.png"):
@@ -116,9 +115,15 @@ class Canvas:
 
     def get_color(self, x, y):
         try:
-            x -= int(self.x-self.width*self.zoom/2)
-            y -= int(self.y-self.height*self.zoom/2)
-            return self.data[y*self.width+x]
+            cx = self.x - (self.width/2)*self.zoom
+            cy = self.y - (self.height/2)*self.zoom
+            
+            dx = x - cx
+            dy = y - cy
+            
+            dx = int((dx*self.width)/(self.width*self.zoom))
+            dy = int((dy*self.height)/(self.height*self.zoom))
+            return self.data[dy*self.width+dx]
         except: return
 
     def undo(self):

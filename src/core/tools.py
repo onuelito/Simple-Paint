@@ -50,9 +50,10 @@ class Pencil(ToolBase):
         self.drawing = False
 
     def activate(self):
-        self.window.toolTip.text = "Pencil: "+str(self.size)+" px"
+        self.window.toolTip.text = "Pencil: "+str(int(self.size))+" px"
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if button != 1: return
         self.pre_x = x
         self.pre_y = y
 
@@ -95,6 +96,7 @@ class Bucket(ToolBase):
         self.filling = False
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if button != 1: return
 
         self.color = self.window.colorP.get_color()
         self.filling = True
@@ -120,22 +122,28 @@ class Eraser(ToolBase):
     def __init__(self, window):
         self.window = window
         self.color = 0xFFFFFFFF
+        self.erasing = False
 
         #Pencil Mouse variables
         self.pre_x = 0
         self.pre_y = 0
 
     def activate(self):
-        self.window.toolTip.text = "Eraser: "+str(self.size)+" px"
+        self.window.toolTip.text = "Eraser: "+str(int(self.size))+" px"
 
     def on_mouse_press(self, x, y, button, modifiers):
+        if button != 1: return
         self.pre_x = x
         self.pre_y = y
 
     def on_mouse_release(self, x, y, button, modifiers):
+        if self.erasing == True: self.erasing = False
+        else: return
+        self.erasing = True
         self.window.canvas._update()
 
     def on_mouse_drag(self, x, y, dx, dy, button, modifiers):
+        if button != 1 or not self.erasing: return
         clib.draw(
             self.window.canvas,
             self.color, 
@@ -166,11 +174,12 @@ class Picker(ToolBase):
    
 
     def on_mouse_press(self, x, y, button, modifiers):
-        color = self.window.canvas.get_color(x, y)
-        if color: 
-            red     = color & 255
-            green   = (color >> 8)  & 255
-            blue    = (color >> 16) & 255
-            self.window.colorP.set_color((red, green, blue, 255))
-        self.window.tool_manager.notool()
+        if button != 1: return
+        self.window.canvas.refresh()
+        color = self.window.canvas.get_color(x, y) or self.window.colorP.get_color()
+        red     = color & 255
+        green   = (color >> 8)  & 255
+        blue    = (color >> 16) & 255
+        self.window.colorP.set_color((red, green, blue, 255))
         self.window.pickerB.pressed = False
+        self.window.tool_manager.tool = 0

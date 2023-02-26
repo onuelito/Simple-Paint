@@ -44,4 +44,4 @@ python setup.py build_ext -i
 #Running
 python run.py
 ```
-
+Executable can be installed at the following link : https://nuelito.itch.io/simple-paint

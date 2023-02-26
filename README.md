@@ -1,6 +1,8 @@
 # Simple-Paint #
 Simple Paint is an open-source project written in Python and C which's goal is being easy to modify, minimalist and not being heavily dependencies reliant.<br/>
 
+**You can press `H` while in the application to see the instructions**
+
 ## System requirements ##
 **Linux:** You will need to have installed `gcc` on your Linux distribution. It can be done using your package manager. For instance:
 <h5>On Arch based distributions</h5>

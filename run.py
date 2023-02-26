@@ -224,8 +224,8 @@ class Window(pyglet.window.Window):
         #print("File loaded", data)
 
     def save_window(self):
-        if self.windows["save"] != None:
-            print("Save Window Already Exists!")
+        if self.windows["save"] != None or self.windows["open"] != None:
+            print("TaskManager already exists!")
             return
         self.windows["save"] = core.SaveWindow(
             self,
@@ -238,8 +238,8 @@ class Window(pyglet.window.Window):
         #self.windows["save"].switch_to()
 
     def open_window(self):
-        if self.windows["open"] != None:
-            print("Open Window Already Exists!")
+        if self.windows["open"] != None or self.windows["save"] != None:
+            print("TaskManager already exists!")
             return
         self.windows["open"] = core.OpenWindow(
             self,
